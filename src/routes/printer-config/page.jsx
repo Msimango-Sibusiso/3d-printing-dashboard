@@ -16,6 +16,13 @@ const PrinterConfig = () => {
     }
   };
 
+  const formatDuration = (duration) => {
+    if (duration === "N/A") {
+      return duration; // If "N/A", just return it
+    }
+    return `${duration} ${duration > 1 ? "hrs" : "hr"}`; // Add "hr" or "hrs" based on the number
+  };
+
   return (
     <div className="flex flex-col gap-y-4">
       <h1 className="title">Printer Config</h1>
@@ -75,9 +82,7 @@ const PrinterConfig = () => {
                         </div>
                       )}
                     </td>
-                    <td className="table-cell">
-                      {printer.duration} {printer.duration > 1 ? "hrs" : "hr"}
-                    </td>
+                    <td className="table-cell">{formatDuration(printer.duration)}</td>
                     <td className="table-cell">
                       <div className="flex items-center gap-x-4">
                         <button className="text-blue-500 dark:text-blue-600">
