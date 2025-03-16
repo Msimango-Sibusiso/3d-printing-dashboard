@@ -51,9 +51,9 @@ const PrinterConfig = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {printers.map((printer) => (
+                {printers.map((printer, index) => (
                   <tr
-                    key={printer}
+                    key={index}
                     className="table-row"
                   >
                     <td className="table-cell">

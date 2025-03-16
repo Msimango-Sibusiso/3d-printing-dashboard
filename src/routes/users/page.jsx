@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { usersList } from "../../constants";
 import { Footer } from "../../layouts/footer";
-import { CirclePlus, PencilLine, Trash } from "lucide-react";
+import { PencilLine, Trash } from "lucide-react";
 
 const Users = () => {
+  const [selectedStatus, setSelectedStatus] = useState("All");
+
   const getStatusClass = (status) => {
     switch (status) {
       case "Verified":
@@ -16,18 +19,29 @@ const Users = () => {
     }
   };
 
+  // Filter users based on the selected status
+  const filteredUsers = selectedStatus === "All" ? usersList : usersList.filter((user) => user.status === selectedStatus);
+
   return (
     <div className="flex flex-col gap-y-4">
       <h1 className="title">Registered Users</h1>
       <div className="card">
-        <div className="card-header">
+        <div className="card-header flex items-center justify-between">
           <div className="flex items-center gap-x-4">
-            <button className="btn-global">
-              <CirclePlus size={20} />
-              New user
-            </button>
+            {/* Dropdown for filtering users by status */}
+            <select
+              className="rounded-md border px-3 py-2"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
+              <option value="All">All</option>
+              <option value="Verified">Verified</option>
+              <option value="Not Verified">Not Verified</option>
+              <option value="Revoked">Revoked</option>
+            </select>
           </div>
         </div>
+
         <div className="card-body p-0">
           <div className="relative h-[500px] w-full flex-shrink-0 overflow-auto rounded-none [scrollbar-width:_thin]">
             <table className="table">
@@ -44,9 +58,9 @@ const Users = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {usersList.map((user) => (
+                {filteredUsers.map((user, index) => (
                   <tr
-                    key={user}
+                    key={index}
                     className="table-row"
                   >
                     <td className="table-cell">{user.regNumber}</td>

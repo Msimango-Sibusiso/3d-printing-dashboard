@@ -1,16 +1,26 @@
-import { forwardRef } from "react";
-import { NavLink } from "react-router-dom";
+import { forwardRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { navbarLinks } from "@/constants";
+import { Tree } from "antd";
 
-import logoLight from "@/assets/logo-light.svg";
-import logoDark from "@/assets/logo-dark.svg";
+import logoLight from "@/assets/unisaColors.png";
+import logoDark from "@/assets/unisaColors.png";
 
 import { cn } from "@/utils/cn";
 
 import PropTypes from "prop-types";
+import { printJobCategories } from "../constants";
 
 export const Sidebar = forwardRef(({ collapsed }, ref) => {
+  const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
+
+  // Show tree view when Print Queue is active
+  const handleCategoryClick = (category) => {
+    navigate("/print-queue", { state: { category } });
+  };
+
   return (
     <aside
       ref={ref}
@@ -24,12 +34,16 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
         <img
           src={logoLight}
           alt="3D Platform Admin"
-          className="dark:hidden"
+          className="rounded-2xl dark:hidden"
+          width={40}
+          height={40}
         />
         <img
           src={logoDark}
           alt="3D Platform Admin"
-          className="hidden dark:block"
+          className="hidden rounded-2xl dark:block"
+          width={40}
+          height={40}
         />
         {!collapsed && <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">3D Platform Admin</p>}
       </div>
@@ -41,17 +55,44 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
           >
             <p className={cn("sidebar-group-title", collapsed && "md:w-[45px]")}>{navbarLink.title}</p>
             {navbarLink.links.map((link) => (
-              <NavLink
+              <div
                 key={link.label}
-                to={link.path}
-                className={cn("sidebar-item", collapsed && "md:w-[45px]")}
+                className="relative"
               >
-                <link.icon
-                  size={22}
-                  className="flex-shrink-0"
-                />
-                {!collapsed && <p className="whitespace-nowrap">{link.label}</p>}
-              </NavLink>
+                <NavLink
+                  to={link.path}
+                  className={cn("sidebar-item", collapsed && "md:w-[45px]")}
+                  onClick={() => {
+                    if (link.label === "Print Queue") {
+                      setExpanded(!expanded);
+                    }
+                  }}
+                >
+                  <link.icon
+                    size={22}
+                    className="flex-shrink-0"
+                  />
+                  {!collapsed && <p className="whitespace-nowrap">{link.label}</p>}
+                </NavLink>
+
+                {/* Show Tree View When Print Queue is Clicked */}
+                {link.label === "Print Queue" && expanded && (
+                  <div className="ml-6 rounded-md bg-white p-2 dark:bg-gray-800">
+                    <Tree
+                      treeData={printJobCategories.map((category) => ({
+                        title: category.title,
+                        key: category.key,
+                      }))}
+                      defaultExpandAll
+                      onSelect={(selectedKeys) => {
+                        if (selectedKeys.length > 0) {
+                          handleCategoryClick(selectedKeys[0]); // Pass only the key
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
         ))}

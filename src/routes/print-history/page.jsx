@@ -21,9 +21,9 @@ const PrintHistory = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {printHistory.map((print) => (
+                {printHistory.map((print, index) => (
                   <tr
-                    key={print}
+                    key={index}
                     className="table-row"
                   >
                     <td className="table-cell">{print.printName}</td>

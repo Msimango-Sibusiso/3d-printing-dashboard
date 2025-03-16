@@ -1,5 +1,7 @@
-@tailwind utilities;
 @import "tailwindcss";
+@config "../tailwind.config.js";
+
+@plugin "tailwindcss-animate";
 
 @layer base {
   body {
@@ -23,8 +25,41 @@
     }
   }
 
+  /* Auth */
+  .auth-container {
+    @apply text-light-100 relative flex flex-col-reverse sm:flex-row;
+  }
+
+  .auth-form {
+    @apply bg-pattern bg-dark-100 my-auto flex h-full min-h-screen flex-1 items-center bg-cover bg-top px-5 py-10;
+  }
+
+  .auth-box {
+    @apply gradient-vertical mx-auto flex max-w-xl flex-col gap-6 rounded-lg p-10;
+  }
+
+  .auth-illustration {
+    @apply sticky h-40 w-full sm:top-0 sm:h-screen sm:flex-1;
+  }
+
+  .auth-bg {
+    @apply flex min-h-screen items-center justify-center bg-slate-100 dark:bg-slate-900;
+  }
+
+  .auth-card {
+    @apply relative flex h-[600px] w-[700px] overflow-hidden rounded-2xl shadow-xl dark:bg-slate-900 dark:shadow-slate-700;
+  }
+
+  .auth-card-bg {
+    @apply absolute top-0 left-1/2 flex h-full w-1/2 items-center justify-center bg-white p-8 dark:bg-slate-900;
+  }
+
   .title {
     @apply text-3xl font-semibold text-slate-900 transition-colors dark:text-slate-50;
+  }
+
+  .auth-title {
+    @apply mb-4 text-2xl font-semibold text-slate-900 transition-colors dark:text-slate-400;
   }
 
   .btn-global {
@@ -35,12 +70,58 @@
     @apply flex h-10 flex-shrink-0 items-center justify-center gap-x-2 rounded-lg p-2 text-slate-400 transition-colors hover:bg-blue-50 hover:text-slate-500 dark:hover:bg-blue-950 dark:hover:text-slate-300;
   }
 
+  .auth-btn {
+    @apply flex w-full cursor-pointer flex-row items-center justify-center gap-x-1 rounded-xl bg-teal-500 px-4 py-2 text-teal-950 dark:bg-blue-600 dark:text-white;
+  }
+
   .link {
     @apply text-base font-medium text-slate-900 transition-colors hover:underline dark:text-slate-50;
   }
 
   .input {
     @apply hidden h-10 flex-shrink-0 items-center gap-x-2 rounded-lg border border-slate-300 px-2 text-base text-slate-900 transition-colors has-[input:focus]:border-blue-500 md:flex md:w-auto lg:w-80 dark:border-slate-700 dark:text-slate-50 dark:focus:border-blue-600;
+  }
+
+  .input-styles {
+    @apply relative mb-5 flex h-9 w-full leading-9;
+  }
+
+  .input-label {
+    @apply absolute mx-2 my-0 bg-white px-4 py-0 text-base leading-9 text-slate-900 transition duration-200 ease-in-out dark:bg-slate-900 dark:text-slate-400;
+  }
+
+  .input-sh {
+    @apply absolute z-10 flex w-full rounded-lg border-2 bg-transparent px-6 py-0 text-sm leading-9 transition duration-100 ease-in-out outline-none dark:border-slate-400 dark:text-slate-50;
+  }
+
+  /* Focus State Border*/
+  .input-sh:focus {
+    @apply border-green-500;
+  }
+
+  /* Valid State (Only applies when user has entered text) */
+  .input-sh:not(:placeholder-shown):valid {
+    @apply border-green-500;
+  }
+
+  /* Invalid State (Only applies when user has entered text and it's invalid) */
+  .input-sh:not(:placeholder-shown):invalid {
+    @apply border-red-500;
+  }
+
+  /* Focus State Text*/
+  .input-sh:focus + .input-label,
+  .input-sh:not(:placeholder-shown):valid + .input-label {
+    @apply z-20 h-8 -translate-x-0.5 -translate-y-[18px] scale-[0.88] leading-8 font-semibold text-green-500;
+  }
+
+  /* Invalid State (Only applies when user has entered text and it's invalid) */
+  .input-sh:not(:placeholder-shown):invalid + .input-label {
+    @apply text-red-500;
+  }
+
+  .auth-input {
+    @apply hidden h-10 flex-shrink-0 items-center gap-x-2 rounded-lg border border-slate-300 px-2 text-base text-slate-900 transition-colors has-[input:focus]:border-blue-500 md:flex md:w-full lg:w-full dark:border-slate-400 dark:text-slate-50 dark:focus:border-blue-600;
   }
 
   .card {
@@ -60,23 +141,36 @@
   }
 
   .table {
-    @apply h-full w-full text-slate-900 dark:text-slate-50;
+    @apply w-full border-collapse text-slate-900 dark:text-slate-50;
   }
 
   .table-header {
     @apply sticky top-0 bg-slate-200 transition-[background] dark:bg-slate-800;
   }
 
-  .table-row {
-    @apply border-b border-slate-300 transition-colors last:border-none dark:border-slate-700;
-  }
-
   .table-head {
     @apply h-12 px-4 text-start;
   }
 
+  .table-body {
+    display: table-row-group;
+    min-height: 100px; /* Ensures body always has height */
+  }
+
+  .table-row {
+    @apply border-b border-slate-300 align-top transition-colors last:border-none dark:border-slate-700;
+  }
+
   .table-cell {
     @apply w-fit p-4 font-medium whitespace-nowrap;
+  }
+
+  /* Ensures table takes full height even with one row */
+  .table tbody:has(tr):before {
+    content: "";
+    display: table-row;
+    height: 10px;
+    visibility: hidden;
   }
 }
 

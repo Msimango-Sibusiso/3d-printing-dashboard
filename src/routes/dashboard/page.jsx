@@ -150,9 +150,9 @@ const DashboardPage = () => {
             <p className="card-title">Recent Prints</p>
           </div>
           <div className="card-body h-[300px] overflow-auto p-0">
-            {recentSalesData.map((sale) => (
+            {recentSalesData.map((sale, index) => (
               <div
-                key={sale.id}
+                key={index}
                 className="flex items-center justify-between gap-x-4 py-2 pr-2"
               >
                 <div className="flex items-center gap-x-4">
@@ -190,9 +190,9 @@ const DashboardPage = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {topProducts.map((product) => (
+                {topProducts.map((product, index) => (
                   <tr
-                    key={product.number}
+                    key={index}
                     className="table-row"
                   >
                     <td className="table-cell">{product.number}</td>
